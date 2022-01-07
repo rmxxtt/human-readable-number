@@ -10,7 +10,7 @@ function toReadable(number) {
         ['zero', 'one', 'two', 'three',
             'four', 'five', 'six', 'seven', 'eight', 'nine']
         ,
-        ['', 'ten', 'twenty', 'thirty', 'forty',
+        ['zero', 'ten', 'twenty', 'thirty', 'forty',
             'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
         ,
         ['hundred']
@@ -18,18 +18,20 @@ function toReadable(number) {
 
     number.toString().split('').reverse().map((value, index, array) => {
         const n = parseInt(value);
-        if (index >= 2) { // сотни
+        if (index >= 2) { // сотни и выше
             result = `${names[0][n]} ${names[index][0]}${result ? ' ' + result : ''}`;
         } else {
-            result = `${names[index][n]}${result ? ' ' + result : ''}`;
+            if(n !== 0){
+                result = `${names[index][n]}${result ? ' ' + result : ''}`;
+            }
         }
 
         console.log("result", index, n, result)
     });
 
     // Удаляем лишние zero
-    if (result.length > 1000) {
-        result = result.replace(/zero/, '');
+    if (result.length > 1) {
+        //result = result.replace(/zero/, '');
     }
 
     return result;
