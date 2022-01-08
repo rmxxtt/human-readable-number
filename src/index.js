@@ -18,7 +18,7 @@ function toReadable(number) {
     // Целые числа
     const w = N[1] > 1 && N[0] !== 0 || N[1] === undefined || N[1] === 0 && N[0] !== 0 ? names[0][N[0]] : '';
     // Удаляем лишние пробелы
-    return `${h} ${d} ${w}`.trim().replaceAll(/\s+/g, ' ');
+    return `${h} ${d} ${w}`.trim().replace(/\s+/g, ' ');
 }
 
 module.exports = toReadable;
