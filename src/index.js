@@ -1,6 +1,4 @@
-function toReadable (number) {
-    let result = '';
-
+function toReadable(number) {
     const names = [
         ['zero', 'one', 'two', 'three',
             'four', 'five', 'six', 'seven', 'eight', 'nine']
@@ -8,41 +6,19 @@ function toReadable (number) {
         ['', 'ten', 'twenty', 'thirty', 'forty',
             'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
         ,
-        ['hundred']
+        ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen',
+            'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
     ];
 
-    const names2 = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen',
-        'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
-
-    number.toString().split('').reverse().map((value, index, array) => {
-        const n = parseInt(value);
-        if (index >= 2) {
-            result = `${names[0][n]} ${names[index][0]} ${result}`.trim();
-        } else {
-            if (n === 1 && index === 1) {
-                const prev = parseInt(array[index - 1]);
-                result = `${names2[prev]} ${result}`.trim();
-            } else if (n === 0 && index === 1){
-                const prev = parseInt(array[index - 1]);
-                if (prev !== 0) {
-                    result = `${names[0][prev]} ${result}`.trim();
-                }
-            } else if (n > 1 && index === 1) {
-                const prev = parseInt(array[index - 1]);
-                if (prev === 0){
-                    result = `${names[index][n]} ${result}`.trim();
-                } else {
-                    result = `${names[index][n]} ${names[0][prev]} ${result}`.trim();
-                }
-            } else if (array.length === 1) {
-                result = `${names[index][n]}`.trim();
-            }
-        }
-    });
-
-    return result;
+    const N = number.toString().split('').reverse().map(v => parseInt(v))
+    // Количество сотен
+    const h = N[2] ? names[0][N[2]] + ' hundred' : '';
+    // Двузначное число
+    let d = N[1] === 1 ? names[2][N[0]] : N[1] > 1 ? names[1][N[1]] : '';
+    // Целые числа
+    const w = N[1] > 1 && N[0] !== 0 || N[1] === undefined || N[1] === 0 && N[0] !== 0 ? names[0][N[0]] : '';
+    // Удаляем лишние пробелы
+    return `${h} ${d} ${w}`.trim().replaceAll(/\s+/g, ' ');
 }
-
-//console.log(toReadable(0))
 
 module.exports = toReadable;
