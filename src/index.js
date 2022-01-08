@@ -1,41 +1,48 @@
-// module.exports = function toReadable (number) {
-//
-// }
-
-//module.exports = function toReadable (number) {
-function toReadable(number) {
+function toReadable (number) {
     let result = '';
 
     const names = [
         ['zero', 'one', 'two', 'three',
             'four', 'five', 'six', 'seven', 'eight', 'nine']
         ,
-        ['zero', 'ten', 'twenty', 'thirty', 'forty',
+        ['', 'ten', 'twenty', 'thirty', 'forty',
             'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
         ,
         ['hundred']
     ];
 
+    const names2 = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen',
+        'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
+
     number.toString().split('').reverse().map((value, index, array) => {
         const n = parseInt(value);
-        if (index >= 2) { // сотни и выше
-            result = `${names[0][n]} ${names[index][0]}${result ? ' ' + result : ''}`;
+        if (index >= 2) {
+            result = `${names[0][n]} ${names[index][0]} ${result}`.trim();
         } else {
-            if(n !== 0){
-                result = `${names[index][n]}${result ? ' ' + result : ''}`;
+            if (n === 1 && index === 1) {
+                const prev = parseInt(array[index - 1]);
+                result = `${names2[prev]} ${result}`.trim();
+            } else if (n === 0 && index === 1){
+                const prev = parseInt(array[index - 1]);
+                if (prev !== 0) {
+                    result = `${names[0][prev]} ${result}`.trim();
+                }
+            } else if (n > 1 && index === 1) {
+                const prev = parseInt(array[index - 1]);
+                if (prev === 0){
+                    result = `${names[index][n]} ${result}`.trim();
+                } else {
+                    result = `${names[index][n]} ${names[0][prev]} ${result}`.trim();
+                }
+            } else if (array.length === 1) {
+                result = `${names[index][n]}`.trim();
             }
         }
-
-        console.log("result", index, n, result)
     });
-
-    // Удаляем лишние zero
-    if (result.length > 1) {
-        //result = result.replace(/zero/, '');
-    }
 
     return result;
 }
 
-console.log(toReadable(101))
-// 125 +
+//console.log(toReadable(0))
+
+module.exports = toReadable;
